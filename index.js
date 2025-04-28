@@ -28,19 +28,6 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
-// Manual CORS for Colyseus matchmake HTTP endpoints
-app.use('/matchmake', (req, res, next) => {
-  const origin = req.headers.origin;
-  res.header('Access-Control-Allow-Origin', origin);
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
-
 // Serve static files (optional - for future admin panel or client hosting)
 app.use(express.static('public'));
 
@@ -52,9 +39,7 @@ app.get('/status', (req, res) => {
 // Create HTTP & WebSocket servers
 const httpServer = createServer(app);
 const gameServer = new Server({
-  server: httpServer,
-  // Use same CORS settings as Express
-  cors: corsOptions
+  server: httpServer
 });
 
 // Make sure the server knows about your room - add debugging

@@ -54,6 +54,8 @@ class GameState extends Schema {
       player.rotationY = data.rotationY || player.rotationY;
       player.animation = data.animation || player.animation;
       player.isJumping = data.isJumping !== undefined ? data.isJumping : player.isJumping;
+    } else {
+      console.warn(`GameState: updatePlayer called for unknown sessionId ${sessionId}`);
     }
   }
 }

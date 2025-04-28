@@ -36,6 +36,32 @@ class GameRoom extends Room {
     });
     console.log("GameRoom: 'jump' message handler registered.");
 
+    // Handler for clients requesting the current state of other players
+    this.onMessage('requestFullState', (client) => {
+      console.log(`GameRoom: Received 'requestFullState' from ${client.sessionId}`);
+      const requestingClientId = client.sessionId;
+      const otherPlayersData = [];
+
+      this.state.players.forEach((player, sessionId) => {
+        if (sessionId !== requestingClientId) {
+          // Send the actual player data needed for initialization
+          otherPlayersData.push({
+            sessionId: sessionId,
+            x: player.x,
+            y: player.y,
+            z: player.z,
+            rotationY: player.rotationY,
+            // Add any other initial state needed by handlePlayerAdd
+            animation: player.animation // If needed initially
+          });
+        }
+      });
+
+      console.log(`GameRoom: Sending 'fullStateResponse' to ${requestingClientId} with data for ${otherPlayersData.length} players.`);
+      client.send('fullStateResponse', otherPlayersData);
+    });
+    console.log("GameRoom: 'requestFullState' message handler registered.");
+
     // Handler for clients requesting the full player list
     this.onMessage("getFullState", (client) => {
       console.log(`GameRoom: Received 'getFullState' request from ${client.sessionId}`);
@@ -47,8 +73,8 @@ class GameRoom extends Room {
           x: player.x,
           y: player.y,
           z: player.z,
-          rotY: player.rotY,
-          animState: player.animState
+          rotationY: player.rotationY,
+          animation: player.animation
           // Add other relevant player properties here
         };
       });
@@ -56,23 +82,15 @@ class GameRoom extends Room {
       client.send("fullStateResponse", allPlayersData);
     });
 
-    // Set the simulation interval (optional)
-    console.log("GameRoom: Setting simulation interval...");
-    this.setSimulationInterval(() => this.update(), 1000 / 60); // 60 fps
-    console.log("GameRoom: Simulation interval set.");
+    // Set the simulation interval (optional) - DISABLED FOR DEBUGGING
+    // console.log("GameRoom: Setting simulation interval...");
+    // this.setSimulationInterval(() => this.update(), 1000 / 60); // 60 fps
+    // console.log("GameRoom: Simulation interval set.");
     console.log("GameRoom: onCreate finished.");
   }
 
   onJoin(client, options) {
-    console.log(`GameRoom: onJoin started for client ${client.sessionId}`);
-    console.log(`Player joined: ${client.sessionId}`);
-
-    // Directly add the player to the state map
-    console.log(`GameRoom: Attempting direct state.players.set for ${client.sessionId}. Current player map size: ${this.state.players.size}`);
     this.state.players.set(client.sessionId, new Player());
-    console.log(`GameRoom: Direct state.players.set completed for ${client.sessionId}. Current player map size: ${this.state.players.size}`);
-
-    console.log(`GameRoom: onJoin finished for client ${client.sessionId}. Final player map size: ${this.state.players.size}`);
   }
 
   onLeave(client, consented) {
