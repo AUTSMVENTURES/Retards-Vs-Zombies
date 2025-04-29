@@ -1,0 +1,17 @@
+GOALS FOR TODAY
+
+1. Zombie enemy in-game
+2. Chat bubble support
+3. Space to Jump with Jumping Animation
+4. Warcry on press C (in place of collision guides)
+5. Coin loading animation
+6. New music in-game
+
+
+MEDIUM TERM
+1. REDO RETARD MODEL LOW POLY NEW FACE
+
+
+
+$RFC CONTENT
+KATY PERRY REMIX
