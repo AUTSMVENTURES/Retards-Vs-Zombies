@@ -1,10 +1,10 @@
 {
   "name": "multiplayer-server",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "build/index.js",
   "scripts": {
-    "build": "rimraf dist && tsc && copyfiles -u 1 src/**/*.js dist/",
-    "start": "npm run build && npx kill-port 2567 && concurrently \"node dist/index.js\" \"npm run dev --prefix ../retardedfightsimulator2\"",
+    "build": "rimraf build && tsc && copyfiles -u 1 src/**/*.js build/",
+    "start": "node build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
