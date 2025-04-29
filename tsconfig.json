@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2021", // Target modern Node.js
+    "module": "CommonJS", // Use CommonJS modules for Node
+    "outDir": "./dist", // Output directory
+    "rootDir": "./src", // Source directory
+    "strict": true, // Enable strict type checking
+    "esModuleInterop": true, // Allows default imports from CommonJS modules
+    "experimentalDecorators": true, // Enable decorators
+    "emitDecoratorMetadata": true, // Needed for some decorator use cases
+    "skipLibCheck": true, // Skip checking library types (faster builds)
+    "forceConsistentCasingInFileNames": true // Ensure consistent file casing
+  },
+  "include": ["src/**/*"], // Include all files in src
+  "exclude": ["node_modules", "**/*.spec.ts"] // Exclude node_modules and tests
+}

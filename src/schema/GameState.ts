@@ -1,50 +1,48 @@
-const { Schema, MapSchema } = require('@colyseus/schema');
+import { Schema, MapSchema, type } from '@colyseus/schema';
 
 // Define a Player schema for syncing player data
 class Player extends Schema {
+  @type("number")
+  x: number = 0;
+  @type("number")
+  y: number = 0;
+  @type("number")
+  z: number = 0;
+  @type("number")
+  rotationY: number = 0;
+  @type("string")
+  animation: string = 'idle';
+  @type("boolean")
+  isJumping: boolean = false;
+
   constructor() {
     super();
-    this.x = 0;
-    this.y = 0;
-    this.z = 0;
-    this.rotationY = 0;
-    this.animation = 'idle';
-    this.isJumping = false;
   }
 }
 
-// Define types for serialization using static schema property
-Player.schema = {
-  x: "number",
-  y: "number",
-  z: "number",
-  rotationY: "number",
-  animation: "string",
-  isJumping: "boolean"
-};
-
 // Main game state that holds all players
 class GameState extends Schema {
+  @type({ map: Player })
+  players = new MapSchema<Player>();
+
   constructor() {
     super();
-    // MapSchema is like a synchronized Map that handles add/remove events
-    this.players = new MapSchema();
   }
 
-  createPlayer(sessionId) {
+  createPlayer(sessionId: string) {
     console.log(`Creating player in MapSchema: ${sessionId}`);
     this.players.set(sessionId, new Player());
     console.log(`Player MapSchema size after add: ${this.players.size}`);
   }
 
-  removePlayer(sessionId) {
+  removePlayer(sessionId: string) {
     console.log(`Removing player from MapSchema: ${sessionId}`);
     this.players.delete(sessionId);
     console.log(`Player MapSchema size after remove: ${this.players.size}`);
   }
 
   // UpdatePlayer might not be needed for this test, but keep the structure
-  updatePlayer(sessionId, data) {
+  updatePlayer(sessionId: string, data: any) {
     const player = this.players.get(sessionId);
     if (player) {
       // Update player properties
@@ -60,9 +58,4 @@ class GameState extends Schema {
   }
 }
 
-// Define types for serialization using static schema property
-GameState.schema = {
-  players: { map: Player }
-};
-
-module.exports = { GameState, Player };
+export { GameState, Player };

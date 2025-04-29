@@ -1,9 +1,10 @@
 {
   "name": "multiplayer-server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "npx kill-port 2567 && concurrently \"node index.js\" \"npm run dev --prefix ../retardedfightsimulator2\"",
+    "build": "rimraf dist && tsc && copyfiles -u 1 src/**/*.js dist/",
+    "start": "npm run build && npx kill-port 2567 && concurrently \"node dist/index.js\" \"npm run dev --prefix ../retardedfightsimulator2\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -11,14 +12,26 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@colyseus/schema": "^3.0.0",
+    "@colyseus/schema": "^3.0.35",
     "@colyseus/ws-transport": "^0.16.0",
     "colyseus": "^0.16.0",
     "cors": "^2.8.5",
     "express": "^4.18.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.27.0",
+    "@babel/core": "^7.26.10",
+    "@babel/plugin-proposal-decorators": "^7.25.9",
+    "@babel/plugin-transform-class-properties": "^7.25.9",
+    "@babel/plugin-transform-class-static-block": "^7.26.0",
+    "@babel/preset-env": "^7.26.9",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.3",
     "concurrently": "^9.1.2",
-    "kill-port": "^2.0.1"
+    "copyfiles": "^2.4.1",
+    "kill-port": "^2.0.1",
+    "rimraf": "^5.0.10",
+    "typescript": "^5.8.3"
   }
 }

@@ -2,7 +2,8 @@ const { Server } = require('colyseus');
 const { createServer } = require('http');
 const express = require('express');
 const cors = require('cors');
-const { GameRoom } = require('./src/rooms/GameRoom');
+const { GameRoom } = require('./rooms/GameRoom');
+const { WebSocketTransport } = require('@colyseus/ws-transport');
 
 // Create express app and HTTP server
 const app = express();
@@ -39,7 +40,9 @@ app.get('/status', (req, res) => {
 // Create HTTP & WebSocket servers
 const httpServer = createServer(app);
 const gameServer = new Server({
-  server: httpServer
+  transport: new WebSocketTransport({
+    server: httpServer
+  })
 });
 
 // Make sure the server knows about your room - add debugging
