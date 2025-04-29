@@ -24,9 +24,11 @@ export class GameRoom extends Room<GameState> {
     // Handle player movement messages
     console.log("GameRoom: Registering 'move' message handler...");
     this.onMessage("move", (client: Client, data: any) => {
-      console.log(`[GameRoom] Received 'move' from ${client.sessionId}:`, data); // Log incoming data
+      // Movement logs commented out for development performance
+      // console.log(`[Server RECV] Received 'move' from ${client.sessionId}:`, data);
+      // console.log(`[GameRoom] Received 'move' from ${client.sessionId}:`, data);
       this.state.updatePlayer(client.sessionId, data);
-      console.log(`[GameRoom] Called state.updatePlayer for ${client.sessionId} with move data.`); // Log update attempt
+      // console.log(`[GameRoom] Called state.updatePlayer for ${client.sessionId} with move data.`);
     });
     console.log("GameRoom: 'move' message handler registered.");
 
