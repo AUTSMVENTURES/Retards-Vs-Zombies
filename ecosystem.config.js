@@ -19,7 +19,6 @@ module.exports = {
       // ref: 'origin/master', // Git branch
       // repo: 'GIT_REPOSITORY', // Your Git repo
       path: '/home/deploy/current', // Deployment path on server - **Important**
-      'post-deploy': 'npm install && npm run build && pm2 reload ecosystem.config.js --env production', // Simplified post-deploy
       // Optional: specify environment variables for the deployed app
       // 'env': {
       //   'NODE_ENV': 'production'
