@@ -45,13 +45,20 @@ class GameState extends Schema {
   updatePlayer(sessionId: string, data: any) {
     const player = this.players.get(sessionId);
     if (player) {
-      // Update player properties
-      player.x = data.x || player.x;
-      player.y = data.y || player.y;
-      player.z = data.z || player.z;
-      player.rotationY = data.rotationY || player.rotationY;
-      player.animation = data.animation || player.animation;
-      player.isJumping = data.isJumping !== undefined ? data.isJumping : player.isJumping;
+      // Movement logs commented out for development performance
+      // console.log(`[Server UPDATE] Updating player ${sessionId}:`);
+      // console.log(`  Current : x=${player.x?.toFixed(4)}, y=${player.y?.toFixed(4)}, z=${player.z?.toFixed(4)}, rotY=${player.rotationY?.toFixed(4)}, isJumping=${player.isJumping}`);
+      // console.log(`  Incoming: x=${data.x?.toFixed(4)}, y=${data.y?.toFixed(4)}, z=${data.z?.toFixed(4)}, rotY=${data.rotationY?.toFixed(4)}, isJumping=${data.isJumping}`);
+
+      // Update player properties using ?? and stricter boolean check
+      player.x = data.x ?? player.x; 
+      player.y = data.y ?? player.y;
+      player.z = data.z ?? player.z;
+      player.rotationY = data.rotationY ?? player.rotationY;
+      player.animation = data.animation ?? player.animation;
+      player.isJumping = typeof data.isJumping === 'boolean' ? data.isJumping : player.isJumping; 
+
+      // console.log(`  Updated : x=${player.x?.toFixed(4)}, y=${player.y?.toFixed(4)}, z=${player.z?.toFixed(4)}, rotY=${player.rotationY?.toFixed(4)}, isJumping=${player.isJumping}`);
     } else {
       console.warn(`GameState: updatePlayer called for unknown sessionId ${sessionId}`);
     }
